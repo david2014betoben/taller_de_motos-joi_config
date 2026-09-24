@@ -1,12 +1,15 @@
 import { Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class AppService {
+  constructor(private readonly configService: ConfigService) {}
+
   getInfo() {
     return {
-      shop: process.env.SHOP_NAME,
-      currency: process.env.CURRENCY,
-      environment: process.env.NODE_ENV,
+      shop: this.configService.getOrThrow<string>('SHOP_NAME'),
+      currency: this.configService.getOrThrow<string>('CURRENCY'),
+      environment: this.configService.getOrThrow<string>('NODE_ENV'),
       status: 'ok',
     };
   }
